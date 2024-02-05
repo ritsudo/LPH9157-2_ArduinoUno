@@ -150,7 +150,13 @@ void LCD_FillScreen (unsigned short color)
  //Данные - задаём цвет пикселя
  for (int x = 0; x < 23232; x++)  // 23232 - это 132 * 176
  {   		//(16-ти битовая цветовая палитра (65536 цветов))
-  myScreenBuffer[x] = color;
+	if (x % 2 == 0)
+	{
+		myScreenBuffer[x] = color;
+	} else {
+		myScreenBuffer[x] = 0x0F00;
+	}
+	
  }                 
  
  paint();
