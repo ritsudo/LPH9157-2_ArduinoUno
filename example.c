@@ -9,6 +9,7 @@
 #include <time.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdint.h>
 
 #define SCREEN_WIDTH 132
 #define SCREEN_HEIGHT 176
