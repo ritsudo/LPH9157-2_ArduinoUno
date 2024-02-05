@@ -49,7 +49,7 @@ void LCD_init(void)
  wiringPiSetup();
  // SPI BEGIN SPI.beginTransaction(SPISettings(30000000L, MSBFIRST, SPI_MODE0));
 	
- int fd = wiringPiSPISetup(0, 500000);
+ int fd = wiringPiSPISetup(0, 32000000);
  if(fd < 0)
 	{
 		printf("Open the SPI device failed!\n");;
@@ -90,7 +90,7 @@ void Send_to_lcd (unsigned char RS, unsigned char data)
 }
 
 //===============================================================
-//Функция записи одного пикселя цветности 16 бит в LCD
+//Функция записи экранного буфера в LCD
 //===============================================================
 
 void paint ()
@@ -99,21 +99,9 @@ void paint ()
 	
 	unsigned char *dataPointer = (char*) myScreenBuffer;
 	unsigned char *dataPointer2 = (char*) (myScreenBuffer + (1*4096));
-	
 	unsigned char *dataPointer3 = (char*) (myScreenBuffer + (2*4096));
 	unsigned char *dataPointer4 = (char*) (myScreenBuffer + (3*4096));
 	
-	unsigned char *dataPointer5 = (char*) (myScreenBuffer + (5*4096));
-	unsigned char *dataPointer6 = (char*) (myScreenBuffer + (6*4096));
-	
-	unsigned char *dataPointer7 = (char*) (myScreenBuffer + (7*4096);
-	unsigned char *dataPointer8 = (char*) (myScreenBuffer + (8*4096));
-	
-	unsigned char *dataPointer9 = (char*) (myScreenBuffer + (9*4096));
-	unsigned char *dataPointer10 = (char*) (myScreenBuffer + (10*4096));
-	
-	unsigned char *dataPointer11 = (char*) (myScreenBuffer + (11*4096));
-	unsigned char *dataPointer12 = (char*) (myScreenBuffer + (12*4096));
 	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
@@ -122,21 +110,9 @@ void paint ()
 	
 	wiringPiSPIDataRW(0, dataPointer, 4096);
 	wiringPiSPIDataRW(0, dataPointer2, 4096);
-	
 	wiringPiSPIDataRW(0, dataPointer3, 4096);
 	wiringPiSPIDataRW(0, dataPointer4, 4096);
 	
-	wiringPiSPIDataRW(0, dataPointer5, 4096);
-	wiringPiSPIDataRW(0, dataPointer6, 4096);
-	
-	wiringPiSPIDataRW(0, dataPointer7, 4096);
-	wiringPiSPIDataRW(0, dataPointer8, 4096);
-	
-	wiringPiSPIDataRW(0, dataPointer9, 4096);
-	wiringPiSPIDataRW(0, dataPointer10, 4096);
-	
-	wiringPiSPIDataRW(0, dataPointer11, 4096);
-	wiringPiSPIDataRW(0, dataPointer12, 4096);
 }
 
 //===============================================================
@@ -172,8 +148,6 @@ void LCD_FillScreen (unsigned short color)
  }                 
  
  paint();
- 
- delay(1000);
 } 
 
 
