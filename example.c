@@ -7,8 +7,8 @@ int main (void)
 	
 	for (;;)
 	{
+		LCD_FillScreen (0x000F);
 		LCD_FillScreen (0xF000);
-		LCD_FillScreen (0x0F00);
 	}
 	return 0;
 }

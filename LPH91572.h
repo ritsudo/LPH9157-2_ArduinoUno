@@ -34,7 +34,8 @@ char RS_old;
 //ПРОТОТИПЫ ФУНКЦИЙ
 void LCD_init (void);
 void Send_to_lcd (unsigned char RS, unsigned char data);
-void Send_Int_to_lcd (unsigned char RS, unsigned char data);
+void Send_Int_to_lcd (unsigned char RS, unsigned int data);
+void Send_Long_to_lcd (unsigned char RS, unsigned long data);
 void SetArea (char x1, char x2, char y1, char y2);
 void Put_Pixel (char x, char y, unsigned int color);
 void Send_Symbol (unsigned char symbol, char x, char y, int t_color, int b_color, char zoom_width, char zoom_height, int rot);  
@@ -55,7 +56,7 @@ void LCD_init(void)
  wiringPiSetup();
  // SPI BEGIN SPI.beginTransaction(SPISettings(30000000L, MSBFIRST, SPI_MODE0));
 	
- int fd = wiringPiSPISetup(0, 500000);
+ int fd = wiringPiSPISetup(0, 32000000);
  if(fd < 0)
 	{
 		printf("Open the SPI device failed!\n");;
@@ -96,6 +97,18 @@ void Send_to_lcd (unsigned char RS, unsigned char data)
 }
 
 void Send_Int_to_lcd (unsigned char RS, unsigned int data)
+{
+	unsigned char *dataPointer = (char *)&data;
+	
+	static unsigned char old_RS = 0;
+	if ((old_RS != RS) || (!RS && !old_RS)) {
+		digitalWrite(LCD_RS, RS);
+	}
+	
+	wiringPiSPIDataRW(0, dataPointer, 2);
+}
+
+void Send_Long_to_lcd (unsigned char RS, unsigned long data)
 {
 	unsigned char *dataPointer = (char *)&data;
 	
@@ -419,7 +432,8 @@ void LCD_FillScreen (unsigned int color)
  //Данные - задаём цвет пикселя
  for (int x = 0; x < 23232; x++)  // 23232 - это 132 * 176
  {   		//(16-ти битовая цветовая палитра (65536 цветов))
-  Send_Int_to_lcd(DAT, color);
+  unsigned long longColor = color & (color << 16));
+  Send_Long_to_lcd(DAT, longColor);
  }                 
 } 
 
