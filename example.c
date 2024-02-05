@@ -21,27 +21,28 @@ int main (void)
 {
 	LCD_init();
 
+	uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
 	
 	//Забивка скриншота 132x176
 	
-	/*
+	
 	
 	FILE* f_scr = fopen("test.bmp", "r");
 	fseek(f_scr, 0x46, SEEK_SET); // skip bmp header
-	fread(&myScreenShot, 1, 176 * 132 * 2, f_scr); // 2 means 16 bit, USE R5G6B5 palette
+	fread(&screen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 2, f_scr); // 2 means 16 bit, USE R5G6B5 palette
 	fclose(f_scr);
 	
-	for (int x = 0; x < 23232; x += 1) {
-		myScreenShot[x] = (myScreenShot[x] >> 8 | myScreenShot[x] << 8);
-	}
+	for(int x = 0; x < SCREEN_WIDTH; x++)
+		for(int y = 0; y < SCREEN_HEIGHT; y++)
+			screen[y][x] = (screen[y][x] >> 8) | (screen[y][x] << 8);
 	
-	*/
 	
-	uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
+	/*
+	
     uint16_t old_fb[FB_HEIGHT * FB_WIDTH];
 
     int fd_scr = open("/dev/fb0", O_RDONLY);
-    int scr_sz = FB_HEIGHT * FB_WIDTH * 2/*16bit*/;
+    int scr_sz = FB_HEIGHT * FB_WIDTH * 2;
     uint16_t* fb_screenshot = mmap(0, scr_sz, PROT_READ, MAP_PRIVATE, fd_scr, 0);
 
     // scaling
@@ -63,7 +64,7 @@ int main (void)
 
                 uint16_t px = fb_screenshot[x*FB_HEIGHT + y];
 
-                screen[y][x] = px;
+                screen[y][SCREEN_WIDTH - 1 - x] = px;
             }
 
         LCD_FillScreen((unsigned short*)&screen[0][0]);
@@ -90,6 +91,9 @@ int main (void)
     close(fd_scr);
 
     printf("fin\n"); 
+
+	*/
+	LCD_FillScreen((unsigned short*)&screen[0][0]);
 	
 	return 0;
 }
