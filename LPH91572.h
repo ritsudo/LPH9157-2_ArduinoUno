@@ -106,6 +106,15 @@ void paint ()
 	unsigned char *dataPointer5 = (char*) (myScreenBuffer + (5*4096));
 	unsigned char *dataPointer6 = (char*) (myScreenBuffer + (6*4096));
 	
+	unsigned char *dataPointer7 = (char*) (myScreenBuffer + (7*4096);
+	unsigned char *dataPointer8 = (char*) (myScreenBuffer + (8*4096));
+	
+	unsigned char *dataPointer9 = (char*) (myScreenBuffer + (9*4096));
+	unsigned char *dataPointer10 = (char*) (myScreenBuffer + (10*4096));
+	
+	unsigned char *dataPointer11 = (char*) (myScreenBuffer + (11*4096));
+	unsigned char *dataPointer12 = (char*) (myScreenBuffer + (12*4096));
+	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
 		digitalWrite(LCD_RS, RS);
@@ -119,6 +128,15 @@ void paint ()
 	
 	wiringPiSPIDataRW(0, dataPointer5, 4096);
 	wiringPiSPIDataRW(0, dataPointer6, 4096);
+	
+	wiringPiSPIDataRW(0, dataPointer7, 4096);
+	wiringPiSPIDataRW(0, dataPointer8, 4096);
+	
+	wiringPiSPIDataRW(0, dataPointer9, 4096);
+	wiringPiSPIDataRW(0, dataPointer10, 4096);
+	
+	wiringPiSPIDataRW(0, dataPointer11, 4096);
+	wiringPiSPIDataRW(0, dataPointer12, 4096);
 }
 
 //===============================================================
