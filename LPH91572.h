@@ -3,7 +3,7 @@
 //              132х176 пикселей
 //          ==== Кизим Игорь ====
 //              Port to Arduino UNO by ritsudo
-//              Using program SPI emulator
+//              Using hardware SPI ang GPIO (wiringPi)
 //-----------------------------------------------------
 
 #include <wiringPi.h>
@@ -33,7 +33,7 @@ char RS_old;
 //ПРОТОТИПЫ ФУНКЦИЙ
 void LCD_init (void);
 void Send_to_lcd (unsigned char RS, unsigned char data);
-void Send_Int_to_lcd (unsigned char RS, unsigned int data);
+void Send_pixel_to_lcd (unsigned char RS, unsigned short data);
 void SetArea (char x1, char x2, char y1, char y2);
 void LCD_FillScreen (unsigned int color);
 
@@ -89,7 +89,7 @@ void Send_to_lcd (unsigned char RS, unsigned char data)
 //Функция записи одного пикселя цветности 16 бит в LCD
 //===============================================================
 
-void Send_Int_to_lcd (unsigned char RS, unsigned int data)
+void Send_pixel_to_lcd (unsigned char RS, unsigned short data)
 {
 	unsigned char *dataPointer = (char *)&data;
 	
@@ -130,7 +130,7 @@ void LCD_FillScreen (unsigned int color)
  //Данные - задаём цвет пикселя
  for (int x = 0; x < 23232; x++)  // 23232 - это 132 * 176
  {   		//(16-ти битовая цветовая палитра (65536 цветов))
-  Send_Int_to_lcd(DAT, color);
+  Send_pixel_to_lcd(DAT, color);
  }                 
 } 
 
