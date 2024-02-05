@@ -7,7 +7,7 @@
 //-----------------------------------------------------
 
 #include "Symbols.h"
-#include <wiringPi.h
+#include <wiringPi.h>
 #include <stdio.h>
 
 //#define _8_BIT_COLOR  //Если закомментировано - 16-ти битный цвет
