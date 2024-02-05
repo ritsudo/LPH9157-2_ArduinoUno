@@ -11,7 +11,6 @@
 #include <wiringPiSPI.h>
 #include <stdio.h>
 
-//#define _8_BIT_COLOR  //Если закомментировано - 16-ти битный цвет
 #define _GEOMETRICAL  //Использование функций вывода геометрических фигур
 
 //===============================================================
@@ -77,13 +76,11 @@ void LCD_init(void)
  Send_to_lcd(CMD, 0x11); //Выход из спящего режима
  delay(20);
  Send_to_lcd(CMD, 0x3a); //Установка цветовой палитры
- #ifdef _8_BIT_COLOR
- Send_to_lcd(DAT, 0x02); //Байт на пиксель 256 цветов
- #else
  Send_to_lcd(DAT, 0x05); //Два байта на пиксель 65536 цветов
- #endif
  delay(20);
  Send_to_lcd(CMD, 0x29); //Включение дисплея
+ 
+ SetArea( 0, 131, 0, 175 );   //Область всего экрана 
 }
 
 //===============================================================
@@ -91,76 +88,12 @@ void LCD_init(void)
 //===============================================================
 void Send_to_lcd (unsigned char RS, unsigned char data)
 {
-	int ret;
-	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
 		digitalWrite(LCD_RS, RS);
 	}
 	
-	
-	
-	ret = wiringPiSPIDataRW(0, &data, sizeof(data));
-	if(ret < 0)
-	{
-		printf("Write data to the SPI failed\n");
-	}
-	
-	
- // SPI.transfer(data);
- 
- 
- //unsigned char count;  
- 
- /*
- digitalWrite(LCD_CLK, 0);
- digitalWrite(LCD_DATA, 0);
- if ((RS_old != RS) || (!RS_old && !RS)) //проверяем старое значение RS (если поступают одни команды то дергаем CS)
- { 
-  digitalWrite(LCD_CS, 1);	// Установка CS 
-  digitalWrite(LCD_RS, RS);	
-  digitalWrite(LCD_CS, 0);	// Сброс CS 
- }
-
- //******************************************************************************
- //Такой прямой код (без цикла) обеспечивает более быструю запись байта в дисплей 
- //******************************************************************************
- digitalWrite(LCD_DATA, 0);
- if ((data & 128) == 128)  digitalWrite(LCD_DATA, 1); 
- digitalWrite(LCD_CLK, 1);
- digitalWrite(LCD_CLK, 0);
- digitalWrite(LCD_DATA, 0);
- if ((data & 64) == 64)  digitalWrite(LCD_DATA, 1); 
- digitalWrite(LCD_CLK, 1);
- digitalWrite(LCD_CLK, 0);
- digitalWrite(LCD_DATA, 0);
- if ((data & 32) == 32)  digitalWrite(LCD_DATA, 1); 
- digitalWrite(LCD_CLK, 1);
- digitalWrite(LCD_CLK, 0);
- digitalWrite(LCD_DATA, 0);
- if ((data & 16) ==16)  digitalWrite(LCD_DATA, 1); 
- digitalWrite(LCD_CLK, 1);
- digitalWrite(LCD_CLK, 0);
- digitalWrite(LCD_DATA, 0);
- if ((data & 8) == 8)  digitalWrite(LCD_DATA, 1); 
- digitalWrite(LCD_CLK, 1);
- digitalWrite(LCD_CLK, 0);
- digitalWrite(LCD_DATA, 0);
- if ((data & 4) == 4)  digitalWrite(LCD_DATA, 1); 
- digitalWrite(LCD_CLK, 1);
- digitalWrite(LCD_CLK, 0);
- digitalWrite(LCD_DATA, 0);
- if ((data & 2) == 2)  digitalWrite(LCD_DATA, 1); 
- digitalWrite(LCD_CLK, 1);
- digitalWrite(LCD_CLK, 0);
- digitalWrite(LCD_DATA, 0);
- if ((data & 1) == 1)  digitalWrite(LCD_DATA, 1); 
- digitalWrite(LCD_CLK, 1);
- digitalWrite(LCD_CLK, 0);
- 
- RS_old=RS;  //запоминаю значение RS	
- digitalWrite(LCD_DATA, 0);
- */
+	wiringPiSPIDataRW(0, &data, sizeof(data));
 }
 
 //===============================================================
@@ -469,19 +402,11 @@ void LCD_Puts_Shadow(char *str, int x, int y,  int t_color, char zoom_width, cha
 //===============================================================
 void LCD_FillScreen (unsigned int color)
 { 
- unsigned int x; 
- signed char i;
- SetArea( 0, 131, 0, 175 );   //Область всего экрана 
  digitalWrite(LCD_RS, 1);    
- 
- //Данные - задаём цвет пикселя
- for (x = 0; x < 23232; x++)  // 23232 - это 132 * 176
- {   
-  #ifdef _8_BIT_COLOR	//(8-ми битовая цветовая палитра (256 цветов))
-  Send_to_lcd( DAT, color ); //Данные - задаём цвет пикселя 
-  #else			//(16-ти битовая цветовая палитра (65536 цветов))
-  Send_to_lcd( DAT, (color >> 8) ); Send_to_lcd( DAT, color );
-  #endif
+
+ for (unsigned int x = 0; x < 23232; x++)  // 23232 - это 132 * 176
+ {   		
+  Send_to_lcd( DAT, color );
  }                 
 } 
 
