@@ -15,7 +15,7 @@ int main (void)
 	fread(&myScreenShot, 1, 176 * 132 * 2/*16bit*/, f_scr);
 	fclose(f_scr);
 	
-	for (int i = 0; i < 23232; i += 1) {
+	for (int x = 0; x < 23232; x += 1) {
 		myScreenShot[x] = (myScreenShot[x] >> 8 | myScreenShot[x] << 8);
 	}
 	
