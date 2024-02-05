@@ -103,16 +103,13 @@ void paint ()
 		digitalWrite(LCD_RS, RS);
 	}
 	
-	int *dataPointer;
-	
 	unsigned char mySendBuffer[4096];
-	unsigned char *sendBufferPointer = &mySendBuffer;
 	
 	for (unsigned char i = 0; i < 11; i += 1)
 	{
-		dataPointer = &myScreenBuffer + (i*4096);
-		memcpy(dataPointer, sendBufferPointer, 4096);
-		wiringPiSPIDataRW(0, sendBufferPointer, 4096);
+		unsigned int *dataPointer = &myScreenBuffer + (i*4096);
+		memcpy(dataPointer, mySendBuffer, 4096);
+		wiringPiSPIDataRW(0, mySendBuffer, 4096);
 	}
 	
 }
