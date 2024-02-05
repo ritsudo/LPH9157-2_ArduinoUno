@@ -97,21 +97,22 @@ void paint ()
 {
 	unsigned char RS = 1;
 	
-	unsigned char *dataPointer = (char*) myScreenBuffer;
-	unsigned char *dataPointer2 = (char*) (myScreenBuffer + (1*4096));
-	unsigned char *dataPointer3 = (char*) (myScreenBuffer + (2*4096));
-	unsigned char *dataPointer4 = (char*) (myScreenBuffer + (3*4096));
-	
-	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
 		digitalWrite(LCD_RS, RS);
 	}
 	
-	wiringPiSPIDataRW(0, dataPointer, 4096);
-	wiringPiSPIDataRW(0, dataPointer2, 4096);
-	wiringPiSPIDataRW(0, dataPointer3, 4096);
-	wiringPiSPIDataRW(0, dataPointer4, 4096);
+	short *dataPointer;
+	
+	unsigned char mySendBuffer[4096];
+	unsigned char *sendBufferPointer = &mySendBuffer;
+	
+	for (unsigned char i = 0; i < 11; i += 1)
+	{
+		dataPointer = &(myScreenBuffer + (i*4096));
+		memcpy(dataPointer, sendBufferPointer, 4096);
+		wiringPiSPIDataRW(0, sendBufferPointer, 4096);
+	}
 	
 }
 
@@ -148,6 +149,8 @@ void LCD_FillScreen (unsigned short color)
  }                 
  
  paint();
+ 
+ delay(1000);
 } 
 
 
