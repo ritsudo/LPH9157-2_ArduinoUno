@@ -55,9 +55,9 @@ pinMode(LCD_RS, OUTPUT);
 pinMode(LCD_CLK, OUTPUT);
 pinMode(LCD_DATA, OUTPUT);
 
- digitalWrite(LCD_RESET, LOW);
+ digitalWrite(LCD_RESET, 0);
  delay(500);
- digitalWrite(LCD_RESET, HIGH);
+ digitalWrite(LCD_RESET, 1);
  delay(500);
  Send_to_lcd(CMD, 0x01); //Программный сброс
  Send_to_lcd(CMD, 0x36); //Memory Access Control (Направление заполнения области дисплея (памяти): 0bVHRXXXXX, V - заполнение по вертикали (0 - сверху-вниз, 1 - снизу-вверх), 
@@ -80,13 +80,13 @@ pinMode(LCD_DATA, OUTPUT);
 void Send_to_lcd (unsigned char RS, unsigned char data)
 {
  //unsigned char count;  
- digitalWrite(LCD_CLK, LOW);
- digitalWrite(LCD_DATA, LOW);
+ digitalWrite(LCD_CLK, 0);
+ digitalWrite(LCD_DATA, 0);
  if ((RS_old != RS) || (!RS_old && !RS)) //проверяем старое значение RS (если поступают одни команды то дергаем CS)
  { 
-  digitalWrite(LCD_CS, HIGH);	// Установка CS 
+  digitalWrite(LCD_CS, 1);	// Установка CS 
   digitalWrite(LCD_RS, RS);	
-  digitalWrite(LCD_CS, LOW);	// Сброс CS 
+  digitalWrite(LCD_CS, 0);	// Сброс CS 
  }
  //******************************************************************************
  //Такой цикл обеспечивает более компактный код при записи байта в дисплей 
@@ -96,49 +96,49 @@ void Send_to_lcd (unsigned char RS, unsigned char data)
  { 
   if(data&0x80)		LCD_DATA=1;
   else			    LCD_DATA=0;
-  digitalWrite(LCD_CLK, HIGH);  
+  digitalWrite(LCD_CLK, 1);  
   data <<= 1;
-  digitalWrite(LCD_CLK, LOW);    
+  digitalWrite(LCD_CLK, 0);    
  } 
  */
  //******************************************************************************
  //Такой прямой код (без цикла) обеспечивает более быструю запись байта в дисплей 
  //******************************************************************************
- digitalWrite(LCD_DATA, LOW);
- if ((data & 128) == 128)  digitalWrite(LCD_DATA, HIGH); 
- digitalWrite(LCD_CLK, HIGH);
- digitalWrite(LCD_CLK, LOW);
- digitalWrite(LCD_DATA, LOW);
- if ((data & 64) == 64)  digitalWrite(LCD_DATA, HIGH); 
- digitalWrite(LCD_CLK, HIGH);
- digitalWrite(LCD_CLK, LOW);
- digitalWrite(LCD_DATA, LOW);
- if ((data & 32) == 32)  digitalWrite(LCD_DATA, HIGH); 
- digitalWrite(LCD_CLK, HIGH);
- digitalWrite(LCD_CLK, LOW);
- digitalWrite(LCD_DATA, LOW);
- if ((data & 16) ==16)  digitalWrite(LCD_DATA, HIGH); 
- digitalWrite(LCD_CLK, HIGH);
- digitalWrite(LCD_CLK, LOW);
- digitalWrite(LCD_DATA, LOW);
- if ((data & 8) == 8)  digitalWrite(LCD_DATA, HIGH); 
- digitalWrite(LCD_CLK, HIGH);
- digitalWrite(LCD_CLK, LOW);
- digitalWrite(LCD_DATA, LOW);
- if ((data & 4) == 4)  digitalWrite(LCD_DATA, HIGH); 
- digitalWrite(LCD_CLK, HIGH);
- digitalWrite(LCD_CLK, LOW);
- digitalWrite(LCD_DATA, LOW);
- if ((data & 2) == 2)  digitalWrite(LCD_DATA, HIGH); 
- digitalWrite(LCD_CLK, HIGH);
- digitalWrite(LCD_CLK, LOW);
- digitalWrite(LCD_DATA, LOW);
- if ((data & 1) == 1)  digitalWrite(LCD_DATA, HIGH); 
- digitalWrite(LCD_CLK, HIGH);
- digitalWrite(LCD_CLK, LOW);
+ digitalWrite(LCD_DATA, 0);
+ if ((data & 128) == 128)  digitalWrite(LCD_DATA, 1); 
+ digitalWrite(LCD_CLK, 1);
+ digitalWrite(LCD_CLK, 0);
+ digitalWrite(LCD_DATA, 0);
+ if ((data & 64) == 64)  digitalWrite(LCD_DATA, 1); 
+ digitalWrite(LCD_CLK, 1);
+ digitalWrite(LCD_CLK, 0);
+ digitalWrite(LCD_DATA, 0);
+ if ((data & 32) == 32)  digitalWrite(LCD_DATA, 1); 
+ digitalWrite(LCD_CLK, 1);
+ digitalWrite(LCD_CLK, 0);
+ digitalWrite(LCD_DATA, 0);
+ if ((data & 16) ==16)  digitalWrite(LCD_DATA, 1); 
+ digitalWrite(LCD_CLK, 1);
+ digitalWrite(LCD_CLK, 0);
+ digitalWrite(LCD_DATA, 0);
+ if ((data & 8) == 8)  digitalWrite(LCD_DATA, 1); 
+ digitalWrite(LCD_CLK, 1);
+ digitalWrite(LCD_CLK, 0);
+ digitalWrite(LCD_DATA, 0);
+ if ((data & 4) == 4)  digitalWrite(LCD_DATA, 1); 
+ digitalWrite(LCD_CLK, 1);
+ digitalWrite(LCD_CLK, 0);
+ digitalWrite(LCD_DATA, 0);
+ if ((data & 2) == 2)  digitalWrite(LCD_DATA, 1); 
+ digitalWrite(LCD_CLK, 1);
+ digitalWrite(LCD_CLK, 0);
+ digitalWrite(LCD_DATA, 0);
+ if ((data & 1) == 1)  digitalWrite(LCD_DATA, 1); 
+ digitalWrite(LCD_CLK, 1);
+ digitalWrite(LCD_CLK, 0);
  
  RS_old=RS;  //запоминаю значение RS	
- digitalWrite(LCD_DATA, LOW);
+ digitalWrite(LCD_DATA, 0);
 }
 
 //===============================================================
@@ -164,7 +164,7 @@ void Put_Pixel (char x, char y, unsigned int color)
 {
  signed char i;
  SetArea( x, x, y, y ); 
- digitalWrite(LCD_RS, HIGH);    
+ digitalWrite(LCD_RS, 1);    
  
  #ifdef _8_BIT_COLOR	//(8-ми битовая цветовая палитра (256 цветов))
  Send_to_lcd( DAT, color ); //Данные - задаём цвет пикселя 
@@ -194,7 +194,7 @@ void Send_Symbol (unsigned char symbol, char x, char y, int t_color, int b_color
     case 0: case 180: SetArea( x+zw, x+zw, y, y+(zoom_height*8)-1 ); break;
     case 90: case 270: SetArea( x, x+(zoom_height*8)-1, y+zw, y+zw ); break;                  
    } 
-   digitalWrite(LCD_RS, HIGH); //Передаются данные          
+   digitalWrite(LCD_RS, 1); //Передаются данные          
    for ( b = 0; b < 8; b++ ) //Цикл перебирания 8 бит байта
    {         
     zh = zoom_height; //в zoom_height раз увеличится высота символа
@@ -450,7 +450,7 @@ void LCD_FillScreen (unsigned int color)
  unsigned int x; 
  signed char i;
  SetArea( 0, 131, 0, 175 );   //Область всего экрана 
- digitalWrite(LCD_RS, HIGH);    
+ digitalWrite(LCD_RS, 1);    
  
  //Данные - задаём цвет пикселя
  for (x = 0; x < 23232; x++)  // 23232 - это 132 * 176
