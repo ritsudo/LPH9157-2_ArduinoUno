@@ -18,9 +18,9 @@
 
 #define LCD_RS 		21	//CD - тип передаваемых данных - СЕРЫЙ
 #define LCD_RESET 	22 //Сброс - КОРИЧНЕВЫЙ
-#define LCD_CS 		23 //Выбор чипа - ЗЕЛЁНЫЙ
-#define LCD_CLK 	24 //Синхронизация - СИНИЙ
-#define LCD_DATA 	25 //Данные - БЕЛЫЙ
+#define LCD_CS 		23 //Выбор чипа - ЗЕЛЁНЫЙ - ИСПОЛЬЗУЕМ SPIDEV0.0 PIN 24
+#define LCD_CLK 	24 //Синхронизация - СИНИЙ - ИСПОЛЬЗУЕМ SPIDEV0.0 PIN 23
+#define LCD_DATA 	25 //Данные - БЕЛЫЙ  - ИСПОЛЬЗУЕМ SPIDEV0.0 PIN 19
 
 //*************************************************************
 //Команда/Данные
@@ -50,13 +50,20 @@ void LCD_FillScreen (unsigned int color);
 //===============================================================
 void LCD_init(void)
 {
-	wiringPiSetup();
+ wiringPiSetup();
+ // SPI BEGIN SPI.beginTransaction(SPISettings(30000000L, MSBFIRST, SPI_MODE0));
 	
-pinMode(LCD_CS, OUTPUT);
-pinMode(LCD_RESET, OUTPUT);
-pinMode(LCD_RS, OUTPUT);
-pinMode(LCD_CLK, OUTPUT);
-pinMode(LCD_DATA, OUTPUT);
+ int fd = wiringPiSPISetup(0, 5000000);
+ if(fd < 0)
+	{
+		printf("Open the SPI device failed!\n");;
+ }
+	
+ pinMode(LCD_CS, OUTPUT);
+ pinMode(LCD_RESET, OUTPUT);
+ pinMode(LCD_RS, OUTPUT);
+ pinMode(LCD_CLK, OUTPUT);
+ pinMode(LCD_DATA, OUTPUT);
 
  digitalWrite(LCD_RESET, 0);
  delay(500);
@@ -80,9 +87,25 @@ pinMode(LCD_DATA, OUTPUT);
 //===============================================================
 //Функция записи команды/данных в LCD (RS==0 - команда, RS==1 - данные)
 //===============================================================
-void Send_to_lcd (unsigned char RS, unsigned char data)
+void Send_to_lcd (uint8_t RS, uint8_t data)
 {
+	
+	static uint8_t old_RS = 0;
+	if ((old_RS != RS) || (!RS && !old_RS)) {
+		digitalWrite(LCD_RS, RS);
+	}
+	
+	ret = wiringPiSPIDataRW(0, data, sizeof(data));
+	if(ret < 0)
+	{
+		printf("Write data to the SPI failed\n");
+	}
+ // SPI.transfer(data);
+ 
+ 
  //unsigned char count;  
+ 
+ /*
  digitalWrite(LCD_CLK, 0);
  digitalWrite(LCD_DATA, 0);
  if ((RS_old != RS) || (!RS_old && !RS)) //проверяем старое значение RS (если поступают одни команды то дергаем CS)
@@ -91,19 +114,7 @@ void Send_to_lcd (unsigned char RS, unsigned char data)
   digitalWrite(LCD_RS, RS);	
   digitalWrite(LCD_CS, 0);	// Сброс CS 
  }
- //******************************************************************************
- //Такой цикл обеспечивает более компактный код при записи байта в дисплей 
- //******************************************************************************
- /*
- for (count = 0; count < 8; count++) //Цикл передачи данных
- { 
-  if(data&0x80)		LCD_DATA=1;
-  else			    LCD_DATA=0;
-  digitalWrite(LCD_CLK, 1);  
-  data <<= 1;
-  digitalWrite(LCD_CLK, 0);    
- } 
- */
+
  //******************************************************************************
  //Такой прямой код (без цикла) обеспечивает более быструю запись байта в дисплей 
  //******************************************************************************
@@ -142,6 +153,7 @@ void Send_to_lcd (unsigned char RS, unsigned char data)
  
  RS_old=RS;  //запоминаю значение RS	
  digitalWrite(LCD_DATA, 0);
+ */
 }
 
 //===============================================================
