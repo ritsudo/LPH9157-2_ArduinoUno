@@ -8,6 +8,7 @@
 
 #include "Symbols.h"
 #include <wiringPi.h>
+#include <wiringPiSPI.h>
 #include <stdio.h>
 
 //#define _8_BIT_COLOR  //Если закомментировано - 16-ти битный цвет
