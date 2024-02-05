@@ -98,13 +98,15 @@ void paint ()
 	unsigned char RS = 1;
 	
 	unsigned char *dataPointer = (char*) myScreenBuffer;
+	unsigned char *dataPointer2 = (char*) (myScreenBuffer + 4096);
 	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
 		digitalWrite(LCD_RS, RS);
 	}
 	
-	wiringPiSPIDataRW(0, dataPointer, sizeof(dataPointer));
+	wiringPiSPIDataRW(0, dataPointer, 4096);
+	wiringPiSPIDataRW(0, dataPointer2, 4096);
 }
 
 //===============================================================
