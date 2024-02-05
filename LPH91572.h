@@ -9,6 +9,7 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 #include <stdio.h>
+#include <string.h>
 
 #define _GEOMETRICAL  //Использование функций вывода геометрических фигур
 
