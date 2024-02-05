@@ -99,13 +99,13 @@ void Send_to_lcd (unsigned char RS, unsigned char data)
 	}
 	
 	
-	/*
-	ret = wiringPiSPIDataRW(0, data, sizeof(data));
+	
+	ret = wiringPiSPIDataRW(0, &data, sizeof(data));
 	if(ret < 0)
 	{
 		printf("Write data to the SPI failed\n");
 	}
-	*/
+	
 	
  // SPI.transfer(data);
  
