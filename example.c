@@ -88,7 +88,6 @@ int main (void)
 
     munmap(fb_screenshot, scr_sz);
     close(fd_scr);
-    close_gpio();
 
     printf("fin\n"); 
 	
