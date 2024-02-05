@@ -49,18 +49,8 @@ int main (void)
     struct timespec ts1, ts2;
     clock_gettime(CLOCK_MONOTONIC, &ts1);
 
-    for(;;) // forever
+    for(;;) // forever cycle
     {
-        if(dynamic_fps)
-            if(memcmp(&old_fb, fb_screenshot, sizeof(old_fb)) == 0)
-            {
-                usleep(10000);
-                continue;
-            }
-            else
-            {
-                memcpy(&old_fb, fb_screenshot, sizeof(old_fb));
-            }
 
         for(int x = 0; x < SCREEN_WIDTH; x++)
             for(int y = 0; y < SCREEN_HEIGHT; y++)
