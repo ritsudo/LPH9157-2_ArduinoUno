@@ -89,6 +89,7 @@ void LCD_init(void)
 //===============================================================
 void Send_to_lcd (unsigned char RS, unsigned char data)
 {
+	int ret;
 	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
