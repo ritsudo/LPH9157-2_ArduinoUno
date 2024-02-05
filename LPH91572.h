@@ -142,16 +142,12 @@ void SetArea(char x1, char x2, char y1, char y2)
 //===============================================================
 //                  ЗАЛИВКА ЭКРАНА ЦВЕТОМ 
 //===============================================================
-void LCD_FillScreen (unsigned short color)
+void LCD_FillScreen (unsigned short *inputImg)
 { 
  SetArea( 0, 131, 0, 175 );   //Область всего экрана 
  digitalWrite(LCD_RS, 1);    
  
- //Данные - задаём цвет пикселя
- for (int x = 0; x < 23232; x++)  // 23232 - это 132 * 176
- {   		//(16-ти битовая цветовая палитра (65536 цветов))
-		myScreenBuffer[x] = color;
- }                 
+ memcpy(myScreenBuffer, inputImg, 46464);               
  
  paint();
  
