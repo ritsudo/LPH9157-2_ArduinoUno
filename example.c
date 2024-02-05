@@ -58,12 +58,12 @@ int main (void)
         for(int x = 0; x < SCREEN_WIDTH; x++)
             for(int y = 0; y < SCREEN_HEIGHT; y++)
             {
-                int fb_x = y * scale_X;
-                int fb_y = x * scale_Y;
+//                int fb_x = y * scale_X;
+//                int fb_y = x * scale_Y;
 
-                uint16_t px = fb_screenshot[fb_x + fb_y * FB_WIDTH];
+                uint16_t px = fb_screenshot[x + y * FB_WIDTH];
 
-                screen[y][SCREEN_WIDTH - 1 - x] = (px << 8) | (px >> 8);
+                screen[y][SCREEN_WIDTH - 1 - x] = px;
             }
 
         LCD_FillScreen((unsigned short*)&screen[0][0]);
