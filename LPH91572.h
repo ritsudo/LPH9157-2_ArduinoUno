@@ -98,7 +98,13 @@ void paint ()
 	unsigned char RS = 1;
 	
 	unsigned char *dataPointer = (char*) myScreenBuffer;
-	unsigned char *dataPointer2 = (char*) (myScreenBuffer + 4096);
+	unsigned char *dataPointer2 = (char*) (myScreenBuffer + (1*4096));
+	
+	unsigned char *dataPointer3 = (char*) (myScreenBuffer + (2*4096));
+	unsigned char *dataPointer4 = (char*) (myScreenBuffer + (3*4096));
+	
+	unsigned char *dataPointer5 = (char*) (myScreenBuffer + (5*4096));
+	unsigned char *dataPointer6 = (char*) (myScreenBuffer + (6*4096));
 	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
@@ -107,6 +113,12 @@ void paint ()
 	
 	wiringPiSPIDataRW(0, dataPointer, 4096);
 	wiringPiSPIDataRW(0, dataPointer2, 4096);
+	
+	wiringPiSPIDataRW(0, dataPointer3, 4096);
+	wiringPiSPIDataRW(0, dataPointer4, 4096);
+	
+	wiringPiSPIDataRW(0, dataPointer5, 4096);
+	wiringPiSPIDataRW(0, dataPointer6, 4096);
 }
 
 //===============================================================
