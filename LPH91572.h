@@ -404,7 +404,7 @@ void LCD_FillScreen (unsigned int color)
  digitalWrite(LCD_RS, 1);    
  
  //Данные - задаём цвет пикселя
- for (x = 0; x < 23232; x++)  // 23232 - это 132 * 176
+ for (int x = 0; x < 23232; x++)  // 23232 - это 132 * 176
  {   		//(16-ти битовая цветовая палитра (65536 цветов))
   Send_to_lcd( DAT, (color >> 8) ); Send_to_lcd( DAT, color );
  }                 
