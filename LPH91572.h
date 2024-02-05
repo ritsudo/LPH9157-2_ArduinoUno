@@ -109,9 +109,7 @@ void paint ()
 
 	for (unsigned char i = 0; i < 11; i += 1)
 	{
-		
-		memcpy(mySendBuffer, (myScreenBuffer + (i * 4096)), 4096);
-		
+		memcpy(mySendBuffer, (myScreenBuffer), 4096);	
 		wiringPiSPIDataRW(0, dataPointer, 4096);
 	}
 
