@@ -88,12 +88,14 @@ void LCD_init(void)
 //===============================================================
 void Send_to_lcd (unsigned char RS, unsigned int data)
 {
+	unsigned char dataPointer = &data;
+	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
 		digitalWrite(LCD_RS, RS);
 	}
 	
-	wiringPiSPIDataRW(0, &data, sizeof(data));
+	wiringPiSPIDataRW(0, &dataPointer, sizeof(data));
 }
 
 //===============================================================
