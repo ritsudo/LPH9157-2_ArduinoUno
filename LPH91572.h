@@ -112,6 +112,9 @@ void paint ()
 		memcpy(mySendBuffer, (myScreenBuffer), 4096);	
 		wiringPiSPIDataRW(0, dataPointer, 4096);
 	}
+	
+	memcpy(mySendBuffer, (myScreenBuffer), 1408);	
+	wiringPiSPIDataRW(0, dataPointer, 1408);
 
 	
 }
