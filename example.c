@@ -16,7 +16,7 @@ int main (void)
 	fclose(f_scr);
 	
 	for (int x = 0; x < 23232; x += 1) {
-		myScreenShot[x] = (myScreenShot[x] >> 8 | myScreenShot[x] << 8);
+//		myScreenShot[x] = (myScreenShot[x] >> 8 | myScreenShot[x] << 8);
 	}
 	
 	LCD_FillScreen(myScreenShot);
