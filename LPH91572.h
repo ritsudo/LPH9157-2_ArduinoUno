@@ -87,10 +87,10 @@ void LCD_init(void)
 //===============================================================
 //Функция записи команды/данных в LCD (RS==0 - команда, RS==1 - данные)
 //===============================================================
-void Send_to_lcd (uint8_t RS, uint8_t data)
+void Send_to_lcd (unsigned char RS, unsigned char data)
 {
 	
-	static uint8_t old_RS = 0;
+	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
 		digitalWrite(LCD_RS, RS);
 	}
