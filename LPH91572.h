@@ -55,7 +55,7 @@ void LCD_init(void)
  wiringPiSetup();
  // SPI BEGIN SPI.beginTransaction(SPISettings(30000000L, MSBFIRST, SPI_MODE0));
 	
- int fd = wiringPiSPISetup(0, 5000000);
+ int fd = wiringPiSPISetup(0, 32000000);
  if(fd < 0)
 	{
 		printf("Open the SPI device failed!\n");;
