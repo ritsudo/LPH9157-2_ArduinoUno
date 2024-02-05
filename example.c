@@ -66,7 +66,7 @@ int main (void)
                 screen[y][SCREEN_WIDTH - 1 - x] = (px << 8) | (px >> 8);
             }
 
-        LCD_FillScreen((char*)&screen[0][0]);
+        LCD_FillScreen((unsigned short*)&screen[0][0]);
 
         /// calc fps
         frame_cnt++;
