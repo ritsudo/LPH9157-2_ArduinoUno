@@ -33,7 +33,7 @@ char RS_old;
 //*************************************************************
 //ПРОТОТИПЫ ФУНКЦИЙ
 void LCD_init (void);
-void Send_to_lcd (unsigned char RS, unsigned char data);
+void Send_to_lcd (unsigned char RS, unsigned int data);
 void SetArea (char x1, char x2, char y1, char y2);
 void Put_Pixel (char x, char y, unsigned int color);
 void Send_Symbol (unsigned char symbol, char x, char y, int t_color, int b_color, char zoom_width, char zoom_height, int rot);  
@@ -54,7 +54,7 @@ void LCD_init(void)
  wiringPiSetup();
  // SPI BEGIN SPI.beginTransaction(SPISettings(30000000L, MSBFIRST, SPI_MODE0));
 	
- int fd = wiringPiSPISetup(0, 32000000);
+ int fd = wiringPiSPISetup(0, 500000);
  if(fd < 0)
 	{
 		printf("Open the SPI device failed!\n");;
@@ -79,8 +79,6 @@ void LCD_init(void)
  Send_to_lcd(DAT, 0x05); //Два байта на пиксель 65536 цветов
  delay(20);
  Send_to_lcd(CMD, 0x29); //Включение дисплея
- 
- SetArea( 0, 131, 0, 175 );   //Область всего экрана 
 }
 
 //===============================================================
@@ -88,14 +86,14 @@ void LCD_init(void)
 //===============================================================
 void Send_to_lcd (unsigned char RS, unsigned int data)
 {
-	unsigned char dataPointer = &data;
+	unsigned char *dataPointer = (char *)&data;
 	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
 		digitalWrite(LCD_RS, RS);
 	}
 	
-	wiringPiSPIDataRW(0, &dataPointer, sizeof(data));
+	wiringPiSPIDataRW(0, dataPointer, 2);
 }
 
 //===============================================================
@@ -404,12 +402,14 @@ void LCD_Puts_Shadow(char *str, int x, int y,  int t_color, char zoom_width, cha
 //===============================================================
 void LCD_FillScreen (unsigned int color)
 { 
+ SetArea( 0, 131, 0, 175 );   //Область всего экрана 
  digitalWrite(LCD_RS, 1);    
 
  for (unsigned int x = 0; x < 23232; x++)  // 23232 - это 132 * 176
  {   		
   Send_to_lcd( DAT, color );
  }                 
+ 
 } 
 
 
