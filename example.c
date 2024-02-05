@@ -14,6 +14,9 @@
 #define SCREEN_WIDTH 132
 #define SCREEN_HEIGHT 176
 
+#define FB_WIDTH 320// 176
+#define FB_HEIGHT 240// 144
+
 int main (void)
 {
 	LCD_init();
