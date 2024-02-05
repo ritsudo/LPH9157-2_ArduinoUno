@@ -1,9 +1,8 @@
 #include "LPH91572.h"
-#include <wiringPi.h>
 
 int main (void)
 {
-	wiringPiSetup();
+
 	LCD_init();
 	
 	for (;;)

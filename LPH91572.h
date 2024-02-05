@@ -7,6 +7,7 @@
 //-----------------------------------------------------
 
 #include "Symbols.h"
+#include <wiringPi.h>
 
 //#define _8_BIT_COLOR  //Если закомментировано - 16-ти битный цвет
 #define _GEOMETRICAL  //Использование функций вывода геометрических фигур
@@ -49,6 +50,8 @@ void LCD_FillScreen (unsigned int color);
 //===============================================================
 void LCD_init(void)
 {
+	wiringPiSetup();
+	
 pinMode(LCD_CS, OUTPUT);
 pinMode(LCD_RESET, OUTPUT);
 pinMode(LCD_RS, OUTPUT);
