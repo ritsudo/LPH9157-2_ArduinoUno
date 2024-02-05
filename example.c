@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "LPH91572.h"
 
 int main (void)
@@ -8,17 +10,10 @@ int main (void)
 	
 	//Забивка скриншота 132x176
 	
-	for (int x = 0; x < 23232; x++) 
-	{   		
-		if (x % 2 == 0) {
-		myScreenShot[x] = 0x0F;
-		}
-		else
-		{
-			myScreenShot[x] = 0xF0;
-		}
-	}  
-	
+	FILE* f_scr = fopen("test.bmp", "r");
+	fseek(f_scr, 0x42, SEEK_SET); // skip bmp header
+	fread(&myScreenShot, 1, 176 * 132 * 2/*16bit*/, f_scr);
+	fclose(f_scr);
 	
 	LCD_FillScreen(myScreenShot);
 	
