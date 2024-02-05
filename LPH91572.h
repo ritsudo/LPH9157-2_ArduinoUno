@@ -137,8 +137,9 @@ void LCD_FillScreen (unsigned short color)
  for (int x = 0; x < 23232; x++)  // 23232 - это 132 * 176
  {   		//(16-ти битовая цветовая палитра (65536 цветов))
   myShortArray[x] = color;
-  Send_pixel_to_lcd(DAT, color);
  }                 
+ 
+ paint();
  
  delay(1000);
 } 
