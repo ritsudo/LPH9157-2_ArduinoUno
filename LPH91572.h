@@ -151,7 +151,7 @@ void LCD_FillScreen (unsigned short *inputImg)
  
  paint();
  
- delay(16);
+// delay(16);
 } 
 
 
