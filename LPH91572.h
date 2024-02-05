@@ -36,7 +36,7 @@ void LCD_init (void);
 void Send_to_lcd (unsigned char RS, unsigned char data);
 void paint();
 void SetArea (char x1, char x2, char y1, char y2);
-void LCD_FillScreen (unsigned short color);
+void LCD_FillScreen (unsigned short *inputImg);
 
 //*************************************************************
 //ЭКРАННЫЙ БУФЕР ДЛЯ ОТПРАВКИ ПО SPI
