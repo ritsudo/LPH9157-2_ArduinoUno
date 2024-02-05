@@ -33,9 +33,13 @@ char RS_old;
 //ПРОТОТИПЫ ФУНКЦИЙ
 void LCD_init (void);
 void Send_to_lcd (unsigned char RS, unsigned char data);
-void Send_pixel_to_lcd (unsigned char RS, unsigned short data);
+void paint();
 void SetArea (char x1, char x2, char y1, char y2);
-void LCD_FillScreen (unsigned int color);
+void LCD_FillScreen (unsigned short color);
+
+//*************************************************************
+//ЭКРАННЫЙ БУФЕР ДЛЯ ОТПРАВКИ ПО SPI
+short myScreenBuffer[23232];
 
 //===============================================================
 //                        ИНИЦИАЛИЗАЦИЯ
@@ -45,7 +49,7 @@ void LCD_init(void)
  wiringPiSetup();
  // SPI BEGIN SPI.beginTransaction(SPISettings(30000000L, MSBFIRST, SPI_MODE0));
 	
- int fd = wiringPiSPISetup(0, 32000000);
+ int fd = wiringPiSPISetup(0, 500000);
  if(fd < 0)
 	{
 		printf("Open the SPI device failed!\n");;
@@ -89,16 +93,18 @@ void Send_to_lcd (unsigned char RS, unsigned char data)
 //Функция записи одного пикселя цветности 16 бит в LCD
 //===============================================================
 
-void Send_pixel_to_lcd (unsigned char RS, unsigned short data)
+void paint ()
 {
-	unsigned char *dataPointer = (char *)&data;
+	unsigned char RS = 1;
+	
+	unsigned char *dataPointer = (char*) myScreenBuffer;
 	
 	static unsigned char old_RS = 0;
 	if ((old_RS != RS) || (!RS && !old_RS)) {
 		digitalWrite(LCD_RS, RS);
 	}
 	
-	wiringPiSPIDataRW(0, dataPointer, 2);
+	wiringPiSPIDataRW(0, dataPointer, sizeof(dataPointer));
 }
 
 //===============================================================
@@ -122,7 +128,7 @@ void SetArea(char x1, char x2, char y1, char y2)
 //===============================================================
 //                  ЗАЛИВКА ЭКРАНА ЦВЕТОМ 
 //===============================================================
-void LCD_FillScreen (unsigned int color)
+void LCD_FillScreen (unsigned short color)
 { 
  SetArea( 0, 131, 0, 175 );   //Область всего экрана 
  digitalWrite(LCD_RS, 1);    
@@ -130,8 +136,11 @@ void LCD_FillScreen (unsigned int color)
  //Данные - задаём цвет пикселя
  for (int x = 0; x < 23232; x++)  // 23232 - это 132 * 176
  {   		//(16-ти битовая цветовая палитра (65536 цветов))
+  myShortArray[x] = color;
   Send_pixel_to_lcd(DAT, color);
  }                 
+ 
+ delay(1000);
 } 
 
 
