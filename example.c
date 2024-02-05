@@ -61,9 +61,9 @@ int main (void)
 //                int fb_x = y * scale_X;
 //                int fb_y = x * scale_Y;
 
-                uint16_t px = fb_screenshot[x + y * FB_WIDTH];
+                uint16_t px = fb_screenshot[x*FB_HEIGHT + y];
 
-                screen[y][SCREEN_WIDTH - 1 - x] = px;
+                screen[y][x] = px;
             }
 
         LCD_FillScreen((unsigned short*)&screen[0][0]);
