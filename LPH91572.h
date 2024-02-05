@@ -40,7 +40,7 @@ void LCD_FillScreen (unsigned short color);
 
 //*************************************************************
 //ЭКРАННЫЙ БУФЕР ДЛЯ ОТПРАВКИ ПО SPI
-short myScreenBuffer[23232];
+unsigned short myScreenBuffer[23232];
 
 //===============================================================
 //                        ИНИЦИАЛИЗАЦИЯ
@@ -107,7 +107,7 @@ void paint ()
 	
 	for (unsigned char i = 0; i < 11; i += 1)
 	{
-		unsigned int *dataPointer = &myScreenBuffer + (i*4096);
+		unsigned short *dataPointer = &myScreenBuffer + (i*4096);
 		memcpy(dataPointer, mySendBuffer, 4096);
 		wiringPiSPIDataRW(0, mySendBuffer, 4096);
 	}
