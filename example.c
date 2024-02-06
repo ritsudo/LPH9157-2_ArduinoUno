@@ -40,7 +40,7 @@ int main (void)
 			cell = bufferEnd - (y*SCREEN_WIDTH + (SCREEN_WIDTH-x-1))*3;
 			
 //			uint16_t newColorByte = (inputScreen[cell] & 0b11111000); //red part
-			uint16_t newColorByte = (0b11111000 << 8);
+			uint16_t newColorByte &= (inputScreen[cell+2] & 0b11111000 << 8); //blue part
 			screen[y][x] = newColorByte;
 		}
 	}
