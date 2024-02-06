@@ -33,7 +33,7 @@ int main (void)
 	
 	for(int x = 0; x < SCREEN_WIDTH; x++)
 		for(int y = 0; y < SCREEN_HEIGHT; y++)
-			screen[y][x] = inputScreen[(y*SCREEN_WIDTH + x) * 3];
+			screen[y][x] = inputScreen[y*SCREEN_WIDTH*3 + x*3];
 	
 	
 	/*
