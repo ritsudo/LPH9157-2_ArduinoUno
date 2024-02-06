@@ -37,7 +37,7 @@ int main (void)
 	{
 		for(int y = 0; y < SCREEN_HEIGHT; y++)
 		{
-			cell = bufferEnd - (y*SCREEN_WIDTH + x)*3;
+			cell = bufferEnd - (y*SCREEN_WIDTH + (SCREEN_WIDTH-x))*3;
 			screen[y][x] = inputScreen[cell];
 		}
 	}
