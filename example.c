@@ -26,7 +26,7 @@ int main (void)
 	
 	//Забивка скриншота 132x176
 	
-	FILE* f_scr = fopen("palette.bmp", "r");
+	FILE* f_scr = fopen("cache.bmp", "r");
 	fseek(f_scr, 0x36, SEEK_SET); // skip bmp header
 	fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 3, f_scr); // 2 means 16 bit, USE R5G6B5 palette
 	fclose(f_scr);
@@ -41,9 +41,9 @@ int main (void)
 			
 			uint16_t newColorByte = 
 			  (inputScreen[cell] & 0b11111000)
-			| ((inputScreen[cell+1] & 0b11100000) >> 5) 
-			| ((inputScreen[cell+1] & 0b00011100) << 11)
-			| ((inputScreen[cell+2] & 0b11111000) << 5);
+			| ((inputScreen[cell+2] & 0b11100000) >> 5) 
+			| ((inputScreen[cell+2] & 0b00011100) << 11)
+			| ((inputScreen[cell+1] & 0b11111000) << 5);
 			
 			screen[y][x] = newColorByte;
 		}
