@@ -32,9 +32,9 @@ int main (void)
 	fclose(f_scr);
 	
 	
-	for(int x = 0; x < SCREEN_WIDTH; x++)
+	for(int x = SCREEN_WIDTH; x > 0; x--)
 	{
-		for(int y = 0; y < SCREEN_HEIGHT; y++)
+		for(int y = SCREEN_HEIGHT; y > 0; y--)
 		{
 			screen[y][x] = inputScreen[(y*SCREEN_WIDTH + x)*3];
 		}
