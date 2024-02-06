@@ -21,7 +21,7 @@ int main (void)
 {
 	LCD_init();
 
-	uint16_t screen[SCREEN_WIDTH][SCREEN_HEIGHT];
+	uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
 	uint8_t inputScreen[SCREEN_HEIGHT * SCREEN_WIDTH * 3];
 	
 	//Забивка скриншота 132x176
@@ -31,12 +31,11 @@ int main (void)
 	fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 3, f_scr); // 2 means 16 bit, USE R5G6B5 palette
 	fclose(f_scr);
 	
-	for(int y = 0; y < SCREEN_HEIGHT; y++)
+	for(int x = 0; x < SCREEN_WIDTH; x++)
 	{
-		for(int x = 0; x < SCREEN_WIDTH; x++)
+		for(int y = 0; y < SCREEN_HEIGHT; y++)
 		{
-			uint32_t cell = (y*SCREEN_HEIGHT*3) + x*3;
-			screen[x][y] = (uint16_t) inputScreen[cell];
+			screen[x][y] = inputScreen[inputScreenLen - (y*SCREEN_WIDTH + (SCREEN_WIDTH -x))*3];
 		}
 	}
 	
