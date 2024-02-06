@@ -38,7 +38,9 @@ int main (void)
 		for(int y = 0; y < SCREEN_HEIGHT; y++)
 		{
 			cell = bufferEnd - (y*SCREEN_WIDTH + (SCREEN_WIDTH-x-1))*3;
-			screen[y][x] = inputScreen[cell];
+			
+			uint16_t newColorByte = (inputScreen[cell]&0b0011111);
+			screen[y][x] = newColorByte;
 		}
 	}
 	
