@@ -23,8 +23,6 @@ int main (void)
 	
 	char command[] = "xfce4-screenshooter -b -s cache.bmp";
 	
-	
-
 	uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
 	uint8_t inputScreen[SCREEN_HEIGHT * SCREEN_WIDTH * 3];
 	
@@ -39,9 +37,7 @@ int main (void)
 	
 		int status = system(command);
 		
-		while(!WIFEXITED(status)) {
-			usleep(50000);
-		}
+		usleep(500000);
 		
 		FILE* f_scr = fopen("cache.bmp", "r");
 		fseek(f_scr, 0x36, SEEK_SET); // skip bmp header
