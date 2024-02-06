@@ -20,6 +20,10 @@
 int main (void)
 {
 	LCD_init();
+	
+	char command[] = "xfce4-screenshooter -b -s cache.bmp";
+	
+	system(command);
 
 	uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
 	uint8_t inputScreen[SCREEN_HEIGHT * SCREEN_WIDTH * 3];
@@ -32,6 +36,8 @@ int main (void)
 	
 	for (;;)
 	{
+	
+		
 	
 		FILE* f_scr = fopen("cache.bmp", "r");
 		fseek(f_scr, 0x36, SEEK_SET); // skip bmp header
