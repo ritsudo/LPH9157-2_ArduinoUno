@@ -22,19 +22,18 @@ int main (void)
 	LCD_init();
 
 	uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
+	uint8_t inputScreen[SCREEN_HEIGHT * SCREEN_WIDTH * 3];
 	
 	//Забивка скриншота 132x176
 	
-	
-	
-	FILE* f_scr = fopen("test.bmp", "r");
-	fseek(f_scr, 0x46, SEEK_SET); // skip bmp header
-	fread(&screen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 2, f_scr); // 2 means 16 bit, USE R5G6B5 palette
+	FILE* f_scr = fopen("cache.bmp", "r");
+	fseek(f_scr, 0x36, SEEK_SET); // skip bmp header
+	fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 2, f_scr); // 2 means 16 bit, USE R5G6B5 palette
 	fclose(f_scr);
 	
 	for(int x = 0; x < SCREEN_WIDTH; x++)
 		for(int y = 0; y < SCREEN_HEIGHT; y++)
-			screen[y][x] = (screen[y][x] >> 8) | (screen[y][x] << 8);
+			screen[y][x] = inputScreen[y*SCREEN_WIDTH + x];
 	
 	
 	/*
