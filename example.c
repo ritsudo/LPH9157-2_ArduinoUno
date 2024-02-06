@@ -40,7 +40,7 @@ int main (void)
 		int status = system(command);
 		
 		while(!WIFEXITED(status)) {
-			usleep(20000);
+			usleep(50000);
 		}
 		
 		FILE* f_scr = fopen("cache.bmp", "r");
@@ -65,9 +65,9 @@ int main (void)
 				screen[y][x] = newColorByte;
 			}
 		}
-	LCD_FillScreen((unsigned short*)&screen[0][0]);
+		
+		LCD_FillScreen((unsigned short*)&screen[0][0]);
 	
-
 			/// calc fps
         frame_cnt++;
         if(frame_cnt >= 100)
