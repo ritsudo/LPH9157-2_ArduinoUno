@@ -37,8 +37,12 @@ int main (void)
 	for (;;)
 	{
 	
-		system(command);
-	
+		int status = system(command);
+		
+		while(!WIFEXITED(status)) {
+			usleep(20000);
+		}
+		
 		FILE* f_scr = fopen("cache.bmp", "r");
 		fseek(f_scr, 0x36, SEEK_SET); // skip bmp header
 		fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 3, f_scr); // 2 means 16 bit, USE R5G6B5 palette
@@ -63,8 +67,8 @@ int main (void)
 		}
 	LCD_FillScreen((unsigned short*)&screen[0][0]);
 	
-	
-	/// calc fps
+
+			/// calc fps
         frame_cnt++;
         if(frame_cnt >= 100)
         {
