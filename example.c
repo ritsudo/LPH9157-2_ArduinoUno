@@ -24,29 +24,54 @@ int main (void)
 	uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
 	uint8_t inputScreen[SCREEN_HEIGHT * SCREEN_WIDTH * 3];
 	
+	int frame_cnt = 0;
+    struct timespec ts1, ts2;
+    clock_gettime(CLOCK_MONOTONIC, &ts1);
+	
 	//Забивка скриншота 132x176
 	
-	FILE* f_scr = fopen("cache.bmp", "r");
-	fseek(f_scr, 0x36, SEEK_SET); // skip bmp header
-	fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 3, f_scr); // 2 means 16 bit, USE R5G6B5 palette
-	fclose(f_scr);
-	
-	int cell = 0;
-	int bufferEnd = sizeof(inputScreen) - 1;
-	for(int x = 0; x < SCREEN_WIDTH; x++)
+	for (;;)
 	{
-		for(int y = 0; y < SCREEN_HEIGHT; y++)
+	
+		FILE* f_scr = fopen("cache.bmp", "r");
+		fseek(f_scr, 0x36, SEEK_SET); // skip bmp header
+		fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 3, f_scr); // 2 means 16 bit, USE R5G6B5 palette
+		fclose(f_scr);
+	
+		int cell = 0;
+		int bufferEnd = sizeof(inputScreen) - 1;
+		for(int x = 0; x < SCREEN_WIDTH; x++)
 		{
-			cell = bufferEnd - (y*SCREEN_WIDTH + (SCREEN_WIDTH-x-1))*3;
+			for(int y = 0; y < SCREEN_HEIGHT; y++)
+			{
+				cell = bufferEnd - (y*SCREEN_WIDTH + (SCREEN_WIDTH-x-1))*3;
 			
-			uint16_t newColorByte = 
-			  (inputScreen[cell] & 0b11111000)
-			| ((inputScreen[cell+2] & 0b11100000) >> 5) 
-			| ((inputScreen[cell+2] & 0b00011100) << 11)
-			| ((inputScreen[cell+1] & 0b11111000) << 5);
+				uint16_t newColorByte = 
+				(inputScreen[cell] & 0b11111000)
+				| ((inputScreen[cell+2] & 0b11100000) >> 5) 
+				| ((inputScreen[cell+2] & 0b00011100) << 11)
+				| ((inputScreen[cell+1] & 0b11111000) << 5);
 			
-			screen[y][x] = newColorByte;
+				screen[y][x] = newColorByte;
+			}
 		}
+	LCD_FillScreen((unsigned short*)&screen[0][0]);
+	
+	
+	/// calc fps
+        frame_cnt++;
+        if(frame_cnt >= 100)
+        {
+            clock_gettime(CLOCK_MONOTONIC, &ts2);
+
+            float allsec = (ts2.tv_sec - ts1.tv_sec) + (ts2.tv_nsec - ts1.tv_nsec) / 1000000000.0;
+            float fps = frame_cnt / allsec;
+
+            printf("%f FPS\n", fps);
+
+            frame_cnt = 0;
+            clock_gettime(CLOCK_MONOTONIC, &ts1);
+        }
 	}
 	
 	
@@ -106,7 +131,7 @@ int main (void)
     printf("fin\n"); 
 
 	*/
-	LCD_FillScreen((unsigned short*)&screen[0][0]);
+	
 	
 	return 0;
 }
