@@ -37,7 +37,7 @@ int main (void)
 	
 		int status = system(command);
 		
-		usleep(400000);
+		usleep(450000);
 		
 		FILE* f_scr = fopen("cache.bmp", "r");
 		fseek(f_scr, 0x36, SEEK_SET); // skip bmp header
