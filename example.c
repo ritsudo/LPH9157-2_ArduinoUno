@@ -21,7 +21,7 @@ int main (void)
 {
 	LCD_init();
 
-	uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
+	uint16_t screen[SCREEN_WIDTH][SCREEN_HEIGHT];
 	uint8_t inputScreen[SCREEN_HEIGHT * SCREEN_WIDTH * 3];
 	
 	//Забивка скриншота 132x176
@@ -36,7 +36,7 @@ int main (void)
 		for(int y = 0; y < SCREEN_WIDTH; y++)
 		{
 			uint32_t cell = (x*SCREEN_HEIGHT*3) + y*3;
-			screen[y][x] = inputScreen[cell];
+			screen[x][y] = inputScreen[cell];
 		}
 	}
 	
