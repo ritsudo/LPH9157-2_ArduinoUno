@@ -32,9 +32,13 @@ int main (void)
 	fclose(f_scr);
 	
 	for(int x = 0; x < SCREEN_WIDTH; x++)
+	{
 		for(int y = 0; y < SCREEN_HEIGHT; y++)
+		{
 			uint32_t cell = (y*SCREEN_WIDTH + x) * 3;
 			screen[y][x] = inputScreen[cell];
+		}
+	}
 	
 	
 	/*
