@@ -31,9 +31,9 @@ int main (void)
 	fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 3, f_scr); // 2 means 16 bit, USE R5G6B5 palette
 	fclose(f_scr);
 	
-	for(int y = 0; y < SCREEN_HEIGHT; x++)
+	for(int y = 0; y < SCREEN_HEIGHT; y++)
 	{
-		for(int x = 0; x < SCREEN_WIDTH; y++)
+		for(int x = 0; x < SCREEN_WIDTH; x++)
 		{
 			uint32_t cell = (y*SCREEN_HEIGHT*3) + x*3;
 			screen[x][y] = (uint16_t) inputScreen[cell];
