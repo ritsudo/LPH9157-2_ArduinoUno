@@ -32,7 +32,7 @@ int main (void)
 	fclose(f_scr);
 	
 	int cell = 0;
-	int bufferEnd = sizeof(inputScreen);
+	int bufferEnd = sizeof(inputScreen) - 1;
 	for(int x = 0; x < SCREEN_WIDTH; x++)
 	{
 		for(int y = 0; y < SCREEN_HEIGHT; y++)
