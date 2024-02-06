@@ -67,7 +67,7 @@ void LCD_init(void)
  digitalWrite(LCD_RESET, 1);
  delay(500);
  Send_to_lcd(CMD, 0x01); //Программный сброс
- Send_to_lcd(CMD, 0b10110110); //Memory Access Control (Направление заполнения области дисплея (памяти): 0bVHRXXXXX, V - заполнение по вертикали (0 - сверху-вниз, 1 - снизу-вверх), 
+ Send_to_lcd(CMD, 0b11110110); //Memory Access Control (Направление заполнения области дисплея (памяти): 0bVHRXXXXX, V - заполнение по вертикали (0 - сверху-вниз, 1 - снизу-вверх), 
  Send_to_lcd(DAT, 0x00);
  Send_to_lcd(CMD, 0x11); //Выход из спящего режима
  delay(20);
