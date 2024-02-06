@@ -31,12 +31,14 @@ int main (void)
 	fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 3, f_scr); // 2 means 16 bit, USE R5G6B5 palette
 	fclose(f_scr);
 	
-	
-	for(int x = SCREEN_WIDTH; x > 0; x--)
+	int cell = 0;
+	int bufferEnd = sizeof(inputScreen);
+	for(int x = 0; x < SCREEN_WIDTH; x++)
 	{
-		for(int y = SCREEN_HEIGHT; y > 0; y--)
+		for(int y = 0; y < SCREEN_HEIGHT; y++)
 		{
-			screen[y][x] = inputScreen[(y*SCREEN_WIDTH + x)*3];
+			cell = bufferEnd - (y*SCREEN_WIDTH + x)*3
+			screen[y][x] = inputScreen[cell];
 		}
 	}
 	
