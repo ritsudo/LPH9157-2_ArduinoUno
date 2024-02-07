@@ -14,59 +14,56 @@
 #define SCREEN_WIDTH 132
 #define SCREEN_HEIGHT 176
 
-#define FB_WIDTH 320// 176
-#define FB_HEIGHT 240// 144
+#define FB_WIDTH 320  // 176
+#define FB_HEIGHT 240 // 144
 
-int main (void)
+int main(void)
 {
-	LCD_init();
-	
-	char command[] = "xfce4-screenshooter -b -s cache.bmp";
-	
-	uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
-	uint8_t inputScreen[SCREEN_HEIGHT * SCREEN_WIDTH * 3];
-	
-	int frame_cnt = 0;
+    LCD_init();
+
+    char command[] = "xfce4-screenshooter -b -s cache.bmp";
+
+    uint16_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
+    uint8_t inputScreen[SCREEN_HEIGHT * SCREEN_WIDTH * 3];
+
+    int frame_cnt = 0;
     struct timespec ts1, ts2;
     clock_gettime(CLOCK_MONOTONIC, &ts1);
-	
-	//Забивка скриншота 132x176
-	
-	for (;;)
-	{
-	
-		int status = system(command);
-		
-		usleep(100000);
-		
-		FILE* f_scr = fopen("cache.bmp", "r");
-		fseek(f_scr, 0x36, SEEK_SET); // skip bmp header
-		fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 3, f_scr); // 2 means 16 bit, USE R5G6B5 palette
-		fclose(f_scr);
-	
-		int cell = 0;
-		int bufferEnd = sizeof(inputScreen) - 1;
-		for(int x = 0; x < SCREEN_WIDTH; x++)
-		{
-			for(int y = 0; y < SCREEN_HEIGHT; y++)
-			{
-				cell = bufferEnd - (y*SCREEN_WIDTH + (SCREEN_WIDTH-x-1))*3;
-			
-				uint16_t newColorByte = 
-				(inputScreen[cell] & 0b11111000)
-				| ((inputScreen[cell+2] & 0b11100000) >> 5) 
-				| ((inputScreen[cell+2] & 0b00011100) << 11)
-				| ((inputScreen[cell+1] & 0b11111000) << 5);
-			
-				screen[y][x] = newColorByte;
-			}
-		}
-		
-		LCD_FillScreen((unsigned short*)&screen[0][0]);
-	
-			/// calc fps
+
+    // Забивка скриншота 132x176
+
+    for (;;)
+    {
+
+        int status = system(command);
+
+        usleep(100000);
+
+        FILE *f_scr = fopen("cache.bmp", "r");
+        fseek(f_scr, 0x36, SEEK_SET);                                    // skip bmp header
+        fread(&inputScreen, 1, SCREEN_HEIGHT * SCREEN_WIDTH * 3, f_scr); // 2 means 16 bit, USE R5G6B5 palette
+        fclose(f_scr);
+
+        int cell = 0;
+        int bufferEnd = sizeof(inputScreen) - 1;
+        for (int x = 0; x < SCREEN_WIDTH; x++)
+        {
+            for (int y = 0; y < SCREEN_HEIGHT; y++)
+            {
+                cell = bufferEnd - (y * SCREEN_WIDTH + (SCREEN_WIDTH - x - 1)) * 3;
+
+                uint16_t newColorByte =
+                    (inputScreen[cell] & 0b11111000) | ((inputScreen[cell + 2] & 0b11100000) >> 5) | ((inputScreen[cell + 2] & 0b00011100) << 11) | ((inputScreen[cell + 1] & 0b11111000) << 5);
+
+                screen[y][x] = newColorByte;
+            }
+        }
+
+        LCD_FillScreen((unsigned short *)&screen[0][0]);
+
+        /// calc fps
         frame_cnt++;
-        if(frame_cnt >= 100)
+        if (frame_cnt >= 100)
         {
             clock_gettime(CLOCK_MONOTONIC, &ts2);
 
@@ -78,11 +75,10 @@ int main (void)
             frame_cnt = 0;
             clock_gettime(CLOCK_MONOTONIC, &ts1);
         }
-	}
-	
-	
-	/*
-	
+    }
+
+    /*
+
     uint16_t old_fb[FB_HEIGHT * FB_WIDTH];
 
     int fd_scr = open("/dev/fb0", O_RDONLY);
@@ -134,11 +130,9 @@ int main (void)
     munmap(fb_screenshot, scr_sz);
     close(fd_scr);
 
-    printf("fin\n"); 
+    printf("fin\n");
 
-	*/
-	
-	
-	return 0;
+    */
+
+    return 0;
 }
-
