@@ -53,7 +53,6 @@ void LCD_init(void)
 	if (fd < 0)
 	{
 		printf("Open the SPI device failed!\n");
-		;
 	}
 
 	pinMode(LCD_CS, OUTPUT);
