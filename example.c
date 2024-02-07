@@ -53,7 +53,10 @@ int main(void)
                 cell = bufferEnd - (y * SCREEN_WIDTH + (SCREEN_WIDTH - x - 1)) * 3;
 
                 uint16_t newColorByte =
-                    (inputScreen[cell] & 0b11111000) | ((inputScreen[cell + 2] & 0b11100000) >> 5) | ((inputScreen[cell + 2] & 0b00011100) << 11) | ((inputScreen[cell + 1] & 0b11111000) << 5);
+                    (inputScreen[cell] & 0b11111000) 
+					| ((inputScreen[cell + 2] & 0b11100000) >> 5) 
+					| ((inputScreen[cell + 2] & 0b00011100) << 11) 
+					| ((inputScreen[cell + 1] & 0b11111000) << 5);
 
                 screen[y][x] = newColorByte;
             }
